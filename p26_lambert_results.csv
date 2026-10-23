@@ -1,0 +1,61 @@
+solver,case,revolutions,tof_s,velocity_error_m_s,outcome
+hapsira izzo,short way (120 deg),0,2228.114,2.482534153247273e-12,ok
+hapsira izzo,long way (250 deg),0,5207.623,1.8728330450731676e-12,ok
+hapsira izzo,Molniya-like (90 deg),0,1231.916,4.8698183706588756e-12,ok
+hapsira izzo,near 180 deg (179 deg),0,4222.534,3.4436247701709396e-11,ok
+hapsira izzo,near 180 deg (179.99 deg),0,4248.329,1.1027436229182775e-08,ok
+hapsira izzo,one revolution,1,9302.364,3.1480255910393998e-12,ok
+hapsira izzo,two revolutions,2,16423.445,1.538370149106851e-12,ok
+hapsira izzo,retrograde (i = 150 deg),0,2228.114,3.5803616730494476e-12,ok
+hapsira izzo,hyperbolic (e = 1.5),0,1515.155,6.439293542825908e-12,ok
+hapsira izzo,short arc (5 deg),0,80.869,1.7953085575835335e-10,ok
+hapsira vallado,short way (120 deg),0,2228.114,4.978781150947799e-06,ok
+hapsira vallado,long way (250 deg),0,5207.623,14693.86861075211,ok
+hapsira vallado,Molniya-like (90 deg),0,1231.916,9.800262187846714e-05,ok
+hapsira vallado,near 180 deg (179 deg),0,4222.534,8.986738853732272e-06,ok
+hapsira vallado,near 180 deg (179.99 deg),0,4248.329,1.2904895472494763e-05,ok
+hapsira vallado,one revolution,1,9302.364,nan,raised NotImplementedError: Multi-revolution scenario not supported for Vallado. See issue https://github.com/hapsira/ha
+hapsira vallado,two revolutions,2,16423.445,nan,raised NotImplementedError: Multi-revolution scenario not supported for Vallado. See issue https://github.com/hapsira/ha
+hapsira vallado,retrograde (i = 150 deg),0,2228.114,15032.028354350714,ok
+hapsira vallado,hyperbolic (e = 1.5),0,1515.155,8.0444438031676e-05,ok
+hapsira vallado,short arc (5 deg),0,80.869,nan,raised RuntimeError: Maximum number of iterations reached
+Orekit IodLambert,short way (120 deg),0,2228.114,6.404745667978753e-12,ok
+Orekit IodLambert,long way (250 deg),0,5207.623,6.0667999786704346e-12,ok
+Orekit IodLambert,Molniya-like (90 deg),0,1231.916,3.210061615366513e-12,ok
+Orekit IodLambert,near 180 deg (179 deg),0,4222.534,1.6278943947417398e-10,ok
+Orekit IodLambert,near 180 deg (179.99 deg),0,4248.329,3.9569803947411304e-09,ok
+Orekit IodLambert,one revolution,1,9302.364,7.495510234122855e-11,ok
+Orekit IodLambert,two revolutions,2,16423.445,1.6549355468332378e-10,ok
+Orekit IodLambert,retrograde (i = 150 deg),0,2228.114,1.0695084443661336e-11,ok
+Orekit IodLambert,hyperbolic (e = 1.5),0,1515.155,4.497431116530025e-12,ok
+Orekit IodLambert,short arc (5 deg),0,80.869,2.802076229740705e-11,ok
+Orekit LambertSolver,short way (120 deg),0,2228.114,6.404745667978753e-12,ok
+Orekit LambertSolver,long way (250 deg),0,5207.623,6.0667999786704346e-12,ok
+Orekit LambertSolver,Molniya-like (90 deg),0,1231.916,3.210061615366513e-12,ok
+Orekit LambertSolver,near 180 deg (179 deg),0,4222.534,1.6278943947417398e-10,ok
+Orekit LambertSolver,near 180 deg (179.99 deg),0,4248.329,3.9569803947411304e-09,ok
+Orekit LambertSolver,one revolution,1,9302.364,7.495510234122855e-11,ok
+Orekit LambertSolver,two revolutions,2,16423.445,1.6549355468332378e-10,ok
+Orekit LambertSolver,retrograde (i = 150 deg),0,2228.114,1.0695084443661336e-11,ok
+Orekit LambertSolver,hyperbolic (e = 1.5),0,1515.155,4.497431116530025e-12,ok
+Orekit LambertSolver,short arc (5 deg),0,80.869,2.802076229740705e-11,ok
+Basilisk lambertSolver (Gooding),short way (120 deg),0,2228.114,2.318213734067276e-12,ok
+Basilisk lambertSolver (Gooding),long way (250 deg),0,5207.624,1.0565363201361521e-12,ok
+Basilisk lambertSolver (Gooding),Molniya-like (90 deg),0,1231.916,4.52883909360294e-12,ok
+Basilisk lambertSolver (Gooding),near 180 deg (179 deg),0,4222.534,5.991420156530683e-11,ok
+Basilisk lambertSolver (Gooding),near 180 deg (179.99 deg),0,4248.329,nan,raised RuntimeError: no valid solution flagged
+Basilisk lambertSolver (Gooding),one revolution,1,9302.364,2348.2664835133505,ok
+Basilisk lambertSolver (Gooding),two revolutions,2,16423.445,1.4217791915866692e-12,ok
+Basilisk lambertSolver (Gooding),retrograde (i = 150 deg),0,2228.114,15032.02824504193,ok
+Basilisk lambertSolver (Gooding),hyperbolic (e = 1.5),0,1515.155,9.125465977548383e-12,ok
+Basilisk lambertSolver (Gooding),short arc (5 deg),0,80.869,7.552781223416605e-12,ok
+Basilisk lambertSolver (Izzo),short way (120 deg),0,2228.114,2.318213734067276e-12,ok
+Basilisk lambertSolver (Izzo),long way (250 deg),0,5207.624,1.0565363201361521e-12,ok
+Basilisk lambertSolver (Izzo),Molniya-like (90 deg),0,1231.916,8.236627820231228e-12,ok
+Basilisk lambertSolver (Izzo),near 180 deg (179 deg),0,4222.534,6.073802781837802e-11,ok
+Basilisk lambertSolver (Izzo),near 180 deg (179.99 deg),0,4248.329,nan,raised RuntimeError: no valid solution flagged
+Basilisk lambertSolver (Izzo),one revolution,1,9302.364,1.6764000044290905e-12,ok
+Basilisk lambertSolver (Izzo),two revolutions,2,16423.445,1.6764000044290905e-12,ok
+Basilisk lambertSolver (Izzo),retrograde (i = 150 deg),0,2228.114,15032.02824504193,ok
+Basilisk lambertSolver (Izzo),hyperbolic (e = 1.5),0,1515.155,9.125465977548383e-12,ok
+Basilisk lambertSolver (Izzo),short arc (5 deg),0,80.869,1.0916377626985479e-11,ok

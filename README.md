@@ -5,22 +5,22 @@ An independent check of open-source orbit propagators against closed-form refere
 | | |
 |---|---|
 | **Field** | Astrodynamics; verification of scientific software |
-| **Status** | Active. Three reference cases running; silent failures found in four of hapsira's Kepler solvers; one fix submitted, a second prepared |
+| **Status** | Active. Four reference cases running. Silent failures found in four of hapsira's Kepler solvers (fixes submitted as hapsira [#24](https://github.com/pleiszenburg/hapsira/pull/24) and [#25](https://github.com/pleiszenburg/hapsira/pull/25)), in hapsira's Vallado Lambert solver as documented, and in Basilisk's Lambert solver (to be reported) |
 | **Started** | 23 October 2026 |
 | **Builds on** | The dynamics-engine conformance work (library-independent references, adapters, pre-stated tolerances) |
 | **Possible outlets** | AIAA/AAS student conference; JOSS; a public conformance page |
 
 ## Question
 
-Do open-source orbit propagators (hapsira, Orekit and Basilisk) agree with analytical two-body and J2 secular results, and do they fail silently when they do not?
+Do open-source orbit propagators and Lambert solvers (hapsira, Orekit and Basilisk) agree with analytical two-body and J2 secular results and with orbits whose answer is known, and do they fail silently when they do not?
 
 ## Libraries under test
 
-| Library | Version | Language | Propagators tested |
+| Library | Version | Language | Routines tested |
 |---|---|---|---|
-| hapsira (maintained fork of poliastro) | 0.18.0 | Python | Farnocchia, Vallado, Mikkola, Markley, Pimienta, Gooding, Danby, Recseries (analytical); Cowell (numerical) |
-| Orekit, through orekit-jpype | 13.1.9.0 | Java | Keplerian (analytical); numerical, Dormand-Prince 8(5,3) |
-| Basilisk | 2.12.0 | C++ with Python | RK4 and RKF78 integrators |
+| hapsira (maintained fork of poliastro) | 0.18.0 | Python | Farnocchia, Vallado, Mikkola, Markley, Pimienta, Gooding, Danby, Recseries (analytical); Cowell (numerical); Lambert: Izzo, Vallado |
+| Orekit, through orekit-jpype | 13.1.9.0 | Java | Keplerian (analytical); numerical, Dormand-Prince 8(5,3); Lambert: IodLambert, LambertSolver |
+| Basilisk | 2.12.0 | C++ with Python | RK4 and RKF78 integrators; lambertSolver (Gooding and Izzo methods) |
 
 Environment: Python 3.11, astropy 6.1.7, Eclipse Temurin JDK 21, Windows 11 and Linux.
 
@@ -73,6 +73,30 @@ Eccentricities of 0.999, 1.001, 1.2, 2 and 5 (perigee radius 6800 km), starting 
 | **hapsira Gooding** | 140 km at e = 0.999 | **Defect: Finding 5** |
 | hapsira Recseries | 100,000 km at e = 0.999 | Series approximation, not suited to near-parabolic orbits |
 
+### 4. Lambert's problem (`p26_lambert.py`)
+
+Each case starts from a known orbit. The position and velocity at two times on that orbit are computed in 40-digit arithmetic; the Lambert problem built from the two positions and the time between them must return the orbit's own velocities. Ten cases cover the short and long way round, a Molniya-like orbit, transfers of 179° and 179.99° (where the transfer plane becomes undefined), one and two full revolutions, a retrograde orbit (i = 150°), a hyperbolic transfer and a 5° arc. Where two multi-revolution solutions exist, the closer one counts. The direction of motion is passed to each library as its documentation describes.
+
+| Solver | Worst velocity error | Assessment |
+|---|---|---|
+| hapsira Izzo; Orekit IodLambert and LambertSolver | 1.1e-8 m/s or less, all ten cases | Correct |
+| Basilisk lambertSolver, Izzo method | 1e-10 m/s or less, except as below | Correct, except the retrograde case |
+| Basilisk lambertSolver, both methods | 179.99° transfer refused, with a warning | Correct: documented 1° alignment threshold |
+| **Basilisk lambertSolver, both methods** | **15 km/s on the retrograde orbit, flagged valid** | **Finding 8** |
+| **Basilisk lambertSolver, Gooding method** | **2.3 km/s on one revolution, flagged valid** | **Finding 7** |
+| **hapsira Vallado** | **15 km/s on the long-way and retrograde cases** | **Finding 6** |
+| hapsira Vallado | raises an error for multiple revolutions, and does not converge on the 5° arc | Not silent; multiple revolutions are documented as unsupported |
+
+A second part sweeps 300 random multi-revolution problems (1 to 3 revolutions, prograde, e up to 0.6). For each, two solutions exist and the known orbit is one of them.
+
+| Solver | Both solutions returned | Same solution in both slots | Neither is the known orbit |
+|---|---|---|---|
+| hapsira Izzo | 300 | 0 | 0 |
+| Basilisk lambertSolver, Izzo method | 297 | 0 | 0 |
+| **Basilisk lambertSolver, Gooding method** | 297 | **124** | **55** |
+
+Basilisk refuses three of the 300, whose transfer angles fall within its 1° threshold of 180°.
+
 ## Findings
 
 ### Finding 1. hapsira: Mikkola and Pimienta are wrong beyond one revolution; Mikkola returns `nan` for negative mean anomaly
@@ -83,7 +107,7 @@ Eccentricities of 0.999, 1.001, 1.2, 2 and 5 (perigee radius 6800 km), starting 
 - Present on 0.18.0 and on `main` (5d25e62, January 2024); no existing issue in hapsira or poliastro.
 - **Fix prepared** (`hapsira-patch/`): reduce M for elliptic orbits, use `np.cbrt`, and add a test comparing every solver with Farnocchia (85 of 360 cases fail before the fix, none after). hapsira's core and two-body propagation tests pass with the change (484 passed). With the fix, both solvers agree with this repository's reference to within 4 µm.
 
-- **Pull request opened** on hapsira, 23 October 2026.
+- **Submitted** as [pleiszenburg/hapsira#24](https://github.com/pleiszenburg/hapsira/pull/24), 23 October 2026.
 
 ### Finding 2. hapsira 0.18.0 does not work with the current astropy
 
@@ -101,18 +125,38 @@ Basilisk integrates with a fixed task step, and its RKF78 integrator defaults to
 | 99.8 s (5000 per orbit) | 1e-4, 1e-8 (default) | 3.1 m |
 | 99.8 s | 1e-12, 1e-6 | 1.2 m |
 
-The task step, rather than the tolerance, appears to be the intended control on accuracy. This is configuration, not a defect, but results from Basilisk are only comparable when the step and tolerances are stated. The question of what settings are fair has been put to Basilisk's developers.
+This is how Basilisk is designed. Its variable-step integrators can shorten a step below the task rate to meet their tolerances, but never lengthen it beyond the task rate, because other modules read the spacecraft state at that rate (H. Schaub, personal communication, 23 October 2026). The task rate is therefore the largest step, and the tolerance governs accuracy below it: at the 998 s task rate the default tolerance accepts full-length steps through perigee, while at 99.8 s the steps are already short enough that the tolerance hardly matters. This is configuration, not a defect, and every Basilisk result here states both the task rate and the integrator tolerances.
 
 ### Finding 4. hapsira: Danby is wrong on hyperbolic orbits before periapsis and long after it
 
 - `danby_coe` reduces the hyperbolic mean anomaly modulo 2π, as for an ellipse. The hyperbolic mean anomaly is not periodic, so a negative M (before periapsis) or an M above 2π lands on the wrong part of the trajectory: 55,660 km from the reference five minutes into a run on an orbit with e = 2, and 56,112 km five minutes backward. No error or warning is raised.
-- **Fix prepared** (`hapsira-patch-2/`): leave M unreduced and make the starting value odd in M. Before the fix, 40 of 72 test cases fail; after it, none.
+- **Fix submitted** as [pleiszenburg/hapsira#25](https://github.com/pleiszenburg/hapsira/pull/25) (patch in `hapsira-patch-2/`): leave M unreduced and make the starting value odd in M. Before the fix, 40 of 72 test cases fail; after it, none.
 - Remaining limitation, not a defect: Danby's tolerance applies to M in absolute terms, so on near-parabolic orbits, where M is small, it leaves errors of 0.5 m (e = 0.999) to 1 km (e = 1.001).
 
 ### Finding 5. hapsira: Gooding stops iterating early at its default tolerance
 
 - `gooding_coe` iterates while `f**2 >= rtol`, so the default `rtol = 1e-8` stops it once |f| < 1e-4 rad, where its docstring claims accuracy better than 1e-12 rad. Near e = 1 this leaves errors of several milliradians: 161 km after 45 minutes at e = 0.999.
-- **Fix prepared** (`hapsira-patch-2/`, the same pull request as Finding 4): compare |f| with rtol. With it, Gooding agrees with the reference to 3 µm at e = 0.999.
+- **Fix submitted** in the same pull request as Finding 4, [#25](https://github.com/pleiszenburg/hapsira/pull/25): compare |f| with rtol. With it, Gooding agrees with the reference to 3 µm at e = 0.999.
+
+### Finding 6. hapsira: Vallado's `prograde` flag selects the short or long way, not the direction of motion
+
+- `hapsira.iod.vallado.lambert` documents `prograde` as controlling "the desired inclination of the transfer orbit", the same wording as `izzo.lambert`, where `True` means the orbit's angular momentum points along +z. In the code (`core/iod.py`, `t_m = 1 if prograde else -1`), it instead selects the short way round (`True`) or the long way (`False`), whatever the direction of motion.
+- Used as documented, Vallado returns the wrong transfer for the long way round (250°) and for the retrograde orbit: 15 km/s from the known orbit in both cases, with no error or warning. Izzo, given the same arguments, is correct.
+- hapsira's own test for issue 840 (`tests/test_iod.py`) passes `prograde=False` to Vallado in order to match Izzo's default (`prograde=True`) on a long-way transfer, which agrees with the code rather than the docstring.
+- Whether the code or the docstring should change is the maintainers' decision: changing the code would alter results for existing callers. To be raised as an issue offering both options.
+
+### Finding 7. Basilisk: the Gooding method often returns the same multi-revolution solution twice
+
+- With one or more full revolutions, two transfers exist. `lambertSolver` reports both, each with its own validity flag. With the Gooding method, both slots hold the same solution in 124 of 297 random problems, so the other solution is lost while both are flagged valid; in 55 of those, the solution returned is not the known orbit. The Izzo method in the same module, on the same problems, never does this.
+- Cause: the starting value for the second solution in `goodingInitialGuess` (`lambertSolver.cpp`, commit ea95ec4) differs from Gooding's XLAMB routine (Gooding 1990, as transcribed in lamberthub) in three places. It adds x_M before the correction (`x_M + sqrt(...)` where Gooding has `sqrt(...)`), subtracts x_M at the end where Gooding adds it, and divides by `1 - c3*N` where Gooding has `1 + c3*N`. The starting value then falls on the wrong side of x_M, the point of minimum time of flight, in 117 of 300 problems, and Halley's iteration converges to the first solution.
+- `p26_basilisk_gooding_starter.py` reimplements the Gooding path of `lambertSolver.cpp` in Python. It reproduces the compiled module's outcome in all 297 problems. On its 300 problems it finds 126 duplicates; replacing only the second starting value with Gooding's leaves none.
+- The first-solution starting value also uses `1 - c3*N`, and switches between Gooding's two formulas on the opposite condition (T > T0 rather than T ≤ T0). Neither caused a failure here: the first starting value converged to the correct solution in all 300 problems.
+- To be reported to AVSLab/basilisk with the reimplementation as evidence.
+
+### Finding 8. Basilisk: retrograde transfers return the prograde solution, flagged valid
+
+- `lambertSolver` infers the transfer angle from the sign of the z-component of r1 × r2, taking a negative value to mean a transfer of more than 180°. It therefore assumes motion anticlockwise about the +z axis of the input frame. For the retrograde orbit (i = 150°), both methods return the prograde long-way transfer, 15 km/s from the known orbit, with the validity flag set.
+- The documentation states only that transfer angles must be positive ("the true anomaly of r2 is greater than the true anomaly of r1"), which a retrograde orbit satisfies. Basilisk's unit test uses prograde orbits only (i = 5°). Stating that the orbit must be prograde about +z, or accepting a direction, would close the gap. To be reported alongside Finding 7.
 
 ## Reproducing
 
@@ -124,6 +168,8 @@ py -3.11 -m venv .venv
 .venv\Scripts\python.exe p26_j2.py        # reference case 2, writes p26_j2_results.csv
 .venv\Scripts\python.exe p26_basilisk_tolerance.py   # Finding 3
 .venv\Scripts\python.exe p26_hyperbolic.py   # reference case 3, writes p26_hyperbolic_results.csv
+.venv\Scripts\python.exe p26_lambert.py       # reference case 4, writes p26_lambert_results.csv
+.venv\Scripts\python.exe p26_basilisk_gooding_starter.py   # Finding 7
 ```
 
 Orekit needs a Java runtime and the `JAVA_HOME` variable set. Basilisk downloads its J2-only gravity file (`GGM03S-J2-only.txt`) on first use.
@@ -137,6 +183,8 @@ Orekit needs a Java runtime and the `JAVA_HOME` variable set. Basilisk downloads
 | `p26_j2.py`, `p26_j2_results.csv` | Reference case 2 and its results |
 | `p26_basilisk_tolerance.py`, `p26_basilisk_tolerance_results.csv` | Basilisk RKF78 error by task step and tolerance (Finding 3) |
 | `p26_hyperbolic.py`, `p26_hyperbolic_results.csv` | Reference case 3 and its results |
+| `p26_lambert.py`, `p26_lambert_results.csv` | Reference case 4 and its results |
+| `p26_basilisk_gooding_starter.py` | Python reimplementation of Basilisk's Gooding path, with and without Gooding's starting value (Finding 7) |
 | `hapsira-patch-2/` | The fix for Findings 4 and 5, as a git patch, and the pull request text |
 | `hapsira-patch/` | The fix for Finding 1, as a git patch, and the pull request text |
 | `requirements.txt` | Pinned library versions |
@@ -147,10 +195,9 @@ Existing comparisons check one library against another program rather than again
 
 ## Planned
 
-1. Submit the fix for Finding 1 to hapsira.
+1. Report Finding 6 to hapsira and Findings 7 and 8 to Basilisk.
 2. Second-order (Brouwer) mean-element reference for J2, to tighten the 0.5% tolerance.
-3. Lambert problem cases with known solutions.
-4. A public conformance page, run against each new release.
+3. A public conformance page, run against each new release.
 
 ## Log
 
@@ -158,5 +205,6 @@ Existing comparisons check one library against another program rather than again
 - **23 October 2026.** Reference case 1 (Kepler) run. hapsira Mikkola and Pimienta wrong beyond one revolution; cause traced to the unreduced mean anomaly (Finding 1). Basilisk large errors at e = 0.95 traced to fixed step and default tolerance (Finding 3).
 - **23 October 2026.** While testing the fix, found that Mikkola also returns `nan` for negative mean anomaly. Fix and regression test prepared; hapsira's propagation tests pass with it.
 - **23 October 2026.** Reference case 2 (J2) run. All three libraries agree with the first-order closed form within 0.44% and with one another to about 1e-5. Near-circular orbits found unsuitable for the perigee-rate test.
-- **23 October 2026.** Pull request with the fix for Finding 1 opened on hapsira. Basilisk RKF78 error measured by task step and tolerance (Finding 3).
-- **23 October 2026.** Reference case 3 (hyperbolic and near-parabolic) run. Danby wrong on hyperbolic orbits (Finding 4) and Gooding stopping early near e = 1 (Finding 5); causes traced and a second fix prepared.
+- **23 October 2026.** Pull request with the fix for Finding 1 opened on hapsira. Basilisk RKF78 error measured by task step and tolerance (Finding 3); Basilisk's design (task rate as the maximum step) confirmed by H. Schaub.
+- **23 October 2026.** Reference case 3 (hyperbolic and near-parabolic) run. Danby wrong on hyperbolic orbits (Finding 4) and Gooding stopping early near e = 1 (Finding 5); causes traced; fix submitted as hapsira #25. The fix for Finding 1 is hapsira #24.
+- **23 October 2026.** Reference case 4 (Lambert) run. hapsira Izzo and both Orekit solvers correct throughout. hapsira Vallado's direction flag found to mean short or long way, contrary to its docstring (Finding 6). Basilisk's Gooding method returns the same multi-revolution solution twice in 124 of 297 problems, traced to its second starting value (Finding 7); both Basilisk methods assume prograde motion without saying so (Finding 8).
