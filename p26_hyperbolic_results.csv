@@ -1,0 +1,241 @@
+propagator,e,time_units,t_s,position_error_m,outcome,seconds
+hapsira Farnocchia,0.999,0.3,266.45000695642267,1.468798745778179e-07,ok,3.957
+hapsira Farnocchia,0.999,1.0,888.1666898547423,2.2517399520403095e-07,ok,0.001
+hapsira Farnocchia,0.999,3.0,2664.500069564227,3.0631791344660464e-07,ok,0.0
+hapsira Farnocchia,0.999,10.0,8881.666898547424,3.74835417384493e-07,ok,0.001
+hapsira Farnocchia,1.001,0.3,266.45000695642267,4.155962884636333e-07,ok,0.001
+hapsira Farnocchia,1.001,1.0,888.1666898547423,6.375287016273042e-07,ok,0.001
+hapsira Farnocchia,1.001,3.0,2664.500069564227,8.771898411179925e-07,ok,0.0
+hapsira Farnocchia,1.001,10.0,8881.666898547424,1.00980128159882e-06,ok,0.0
+hapsira Farnocchia,1.2,0.3,266.45000695642267,2.227797943108433e-09,ok,0.0
+hapsira Farnocchia,1.2,1.0,888.1666898547423,5.294682988367193e-09,ok,0.0
+hapsira Farnocchia,1.2,3.0,2664.500069564227,5.550898829703193e-09,ok,0.0
+hapsira Farnocchia,1.2,10.0,8881.666898547424,8.911191772433732e-09,ok,0.0
+hapsira Farnocchia,2.0,0.3,266.45000695642267,6.495091318850291e-09,ok,0.0
+hapsira Farnocchia,2.0,1.0,888.1666898547423,4.507507492598736e-09,ok,0.0
+hapsira Farnocchia,2.0,3.0,2664.500069564227,7.499885442698834e-09,ok,0.0
+hapsira Farnocchia,2.0,10.0,8881.666898547424,2.4304799518541643e-08,ok,0.001
+hapsira Farnocchia,5.0,0.3,266.45000695642267,1.5752910326854155e-09,ok,0.0
+hapsira Farnocchia,5.0,1.0,888.1666898547423,2.227797943108433e-09,ok,0.0
+hapsira Farnocchia,5.0,3.0,2664.500069564227,4.547473508864641e-09,ok,0.0
+hapsira Farnocchia,5.0,10.0,8881.666898547424,1.7067510788532527e-07,ok,0.0
+hapsira Vallado,0.999,0.3,266.45000695642267,0.0015353173810086671,ok,0.575
+hapsira Vallado,0.999,1.0,888.1666898547423,2.218649830120984e-07,ok,0.001
+hapsira Vallado,0.999,3.0,2664.500069564227,1.761914432657589e-05,ok,0.001
+hapsira Vallado,0.999,10.0,8881.666898547424,3.2117398884064814e-07,ok,0.0
+hapsira Vallado,1.001,0.3,266.45000695642267,4.172432710488134e-07,ok,0.001
+hapsira Vallado,1.001,1.0,888.1666898547423,1.9839755262288742e-05,ok,0.001
+hapsira Vallado,1.001,3.0,2664.500069564227,2.1474591940379e-05,ok,0.001
+hapsira Vallado,1.001,10.0,8881.666898547424,0.0046676863138406565,ok,0.0
+hapsira Vallado,1.2,0.3,266.45000695642267,0.0004583981416108096,ok,0.001
+hapsira Vallado,1.2,1.0,888.1666898547423,1.8331451766013172e-09,ok,0.001
+hapsira Vallado,1.2,3.0,2664.500069564227,0.002707375621949329,ok,0.001
+hapsira Vallado,1.2,10.0,8881.666898547424,0.0004374801961704672,ok,0.001
+hapsira Vallado,2.0,0.3,266.45000695642267,1.016845989170083e-09,ok,0.001
+hapsira Vallado,2.0,1.0,888.1666898547423,9.651037364291004e-07,ok,0.0
+hapsira Vallado,2.0,3.0,2664.500069564227,9.204819924895366e-07,ok,0.001
+hapsira Vallado,2.0,10.0,8881.666898547424,1.0172075407480189e-07,ok,0.001
+hapsira Vallado,5.0,0.3,266.45000695642267,5.224649291029007e-09,ok,0.001
+hapsira Vallado,5.0,1.0,888.1666898547423,9.596303922189588e-06,ok,0.001
+hapsira Vallado,5.0,3.0,2664.500069564227,0.003145947764375,ok,0.001
+hapsira Vallado,5.0,10.0,8881.666898547424,9.78879983236672e-08,ok,0.0
+hapsira Mikkola,0.999,0.3,266.45000695642267,nan,returned nan,0.324
+hapsira Mikkola,0.999,1.0,888.1666898547423,4.725415017596903e-07,ok,0.001
+hapsira Mikkola,0.999,3.0,2664.500069564227,8.99335867204414e-07,ok,0.0
+hapsira Mikkola,0.999,10.0,8881.666898547424,8.026361595820045e-07,ok,0.0
+hapsira Mikkola,1.001,0.3,266.45000695642267,nan,returned nan,0.0
+hapsira Mikkola,1.001,1.0,888.1666898547423,4.070341902946956e-07,ok,0.0
+hapsira Mikkola,1.001,3.0,2664.500069564227,4.556545763842289e-07,ok,0.0
+hapsira Mikkola,1.001,10.0,8881.666898547424,1.9648159073108437e-06,ok,0.0
+hapsira Mikkola,1.2,0.3,266.45000695642267,nan,returned nan,0.0
+hapsira Mikkola,1.2,1.0,888.1666898547423,4.3986670157558145e-09,ok,0.0
+hapsira Mikkola,1.2,3.0,2664.500069564227,1.0014771553662848e-08,ok,0.001
+hapsira Mikkola,1.2,10.0,8881.666898547424,8.911191772433732e-09,ok,0.0
+hapsira Mikkola,2.0,0.3,266.45000695642267,nan,returned nan,0.0
+hapsira Mikkola,2.0,1.0,888.1666898547423,3.2235782052243454e-09,ok,0.0
+hapsira Mikkola,2.0,3.0,2664.500069564227,1.929329613230623e-08,ok,0.0
+hapsira Mikkola,2.0,10.0,8881.666898547424,2.4304799518541643e-08,ok,0.001
+hapsira Mikkola,5.0,0.3,266.45000695642267,nan,returned nan,0.0
+hapsira Mikkola,5.0,1.0,888.1666898547423,3.016452674596985e-09,ok,0.001
+hapsira Mikkola,5.0,3.0,2664.500069564227,4.547473508864641e-09,ok,0.0
+hapsira Mikkola,5.0,10.0,8881.666898547424,1.7067510788532527e-07,ok,0.0
+hapsira Markley,0.999,0.3,266.45000695642267,2.7313407409748998e-05,ok,0.205
+hapsira Markley,0.999,1.0,888.1666898547423,4.061036483455275e-05,ok,0.001
+hapsira Markley,0.999,3.0,2664.500069564227,4.293544744441471e-05,ok,0.0
+hapsira Markley,0.999,10.0,8881.666898547424,1.968245693959363e-05,ok,0.0
+hapsira Markley,1.001,0.3,266.45000695642267,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Markley,1.001,1.0,888.1666898547423,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Markley,1.001,3.0,2664.500069564227,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Markley,1.001,10.0,8881.666898547424,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Markley,1.2,0.3,266.45000695642267,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Markley,1.2,1.0,888.1666898547423,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Markley,1.2,3.0,2664.500069564227,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Markley,1.2,10.0,8881.666898547424,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Markley,2.0,0.3,266.45000695642267,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Markley,2.0,1.0,888.1666898547423,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Markley,2.0,3.0,2664.500069564227,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Markley,2.0,10.0,8881.666898547424,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Markley,5.0,0.3,266.45000695642267,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Markley,5.0,1.0,888.1666898547423,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Markley,5.0,3.0,2664.500069564227,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Markley,5.0,10.0,8881.666898547424,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Pimienta,0.999,0.3,266.45000695642267,5.058900260335554e-07,ok,1.312
+hapsira Pimienta,0.999,1.0,888.1666898547423,6.320760007196426e-07,ok,0.001
+hapsira Pimienta,0.999,3.0,2664.500069564227,5.834537881275425e-07,ok,0.0
+hapsira Pimienta,0.999,10.0,8881.666898547424,4.983931385008965e-07,ok,0.0
+hapsira Pimienta,1.001,0.3,266.45000695642267,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Pimienta,1.001,1.0,888.1666898547423,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Pimienta,1.001,3.0,2664.500069564227,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Pimienta,1.001,10.0,8881.666898547424,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Pimienta,1.2,0.3,266.45000695642267,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Pimienta,1.2,1.0,888.1666898547423,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Pimienta,1.2,3.0,2664.500069564227,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Pimienta,1.2,10.0,8881.666898547424,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Pimienta,2.0,0.3,266.45000695642267,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Pimienta,2.0,1.0,888.1666898547423,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Pimienta,2.0,3.0,2664.500069564227,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Pimienta,2.0,10.0,8881.666898547424,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Pimienta,5.0,0.3,266.45000695642267,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Pimienta,5.0,1.0,888.1666898547423,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Pimienta,5.0,3.0,2664.500069564227,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Pimienta,5.0,10.0,8881.666898547424,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Gooding,0.999,0.3,266.45000695642267,25.22222132004404,ok,0.14
+hapsira Gooding,0.999,1.0,888.1666898547423,3.0327361356508505e-06,ok,0.001
+hapsira Gooding,0.999,3.0,2664.500069564227,143443.68042474845,ok,0.0
+hapsira Gooding,0.999,10.0,8881.666898547424,236.4748900607731,ok,0.0
+hapsira Gooding,1.001,0.3,266.45000695642267,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Gooding,1.001,1.0,888.1666898547423,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Gooding,1.001,3.0,2664.500069564227,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Gooding,1.001,10.0,8881.666898547424,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Gooding,1.2,0.3,266.45000695642267,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Gooding,1.2,1.0,888.1666898547423,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Gooding,1.2,3.0,2664.500069564227,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Gooding,1.2,10.0,8881.666898547424,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Gooding,2.0,0.3,266.45000695642267,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Gooding,2.0,1.0,888.1666898547423,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Gooding,2.0,3.0,2664.500069564227,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Gooding,2.0,10.0,8881.666898547424,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Gooding,5.0,0.3,266.45000695642267,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Gooding,5.0,1.0,888.1666898547423,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Gooding,5.0,3.0,2664.500069564227,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Gooding,5.0,10.0,8881.666898547424,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Danby,0.999,0.3,266.45000695642267,0.00023024472930695367,ok,0.249
+hapsira Danby,0.999,1.0,888.1666898547423,4.2161192564141837e-07,ok,0.001
+hapsira Danby,0.999,3.0,2664.500069564227,5.373632284267482e-07,ok,0.001
+hapsira Danby,0.999,10.0,8881.666898547424,0.48441817710333523,ok,0.0
+hapsira Danby,1.001,0.3,266.45000695642267,56115936364.60473,ok,0.001
+hapsira Danby,1.001,1.0,888.1666898547423,4.261749418654668e-07,ok,0.001
+hapsira Danby,1.001,3.0,2664.500069564227,17.68612857556171,ok,0.001
+hapsira Danby,1.001,10.0,8881.666898547424,1.0572507214044628e-06,ok,0.001
+hapsira Danby,1.2,0.3,266.45000695642267,280561477.12616956,ok,0.001
+hapsira Danby,1.2,1.0,888.1666898547423,0.025204764791921536,ok,0.001
+hapsira Danby,1.2,3.0,2664.500069564227,3.587896080275527e-09,ok,0.001
+hapsira Danby,1.2,10.0,8881.666898547424,1.1492515548817503e-06,ok,0.001
+hapsira Danby,2.0,0.3,266.45000695642267,55714934.460521996,ok,0.001
+hapsira Danby,2.0,1.0,888.1666898547423,5.794088024245891e-07,ok,0.001
+hapsira Danby,2.0,3.0,2664.500069564227,1.929329613230623e-08,ok,0.001
+hapsira Danby,2.0,10.0,8881.666898547424,48569932.687905274,ok,0.001
+hapsira Danby,5.0,0.3,266.45000695642267,12819680.433967555,ok,0.001
+hapsira Danby,5.0,1.0,888.1666898547423,6.037017292428969e-08,ok,0.001
+hapsira Danby,5.0,3.0,2664.500069564227,35384240.4169885,ok,0.001
+hapsira Danby,5.0,10.0,8881.666898547424,121326140.47375023,ok,0.001
+hapsira Recseries,0.999,0.3,266.45000695642267,100546362.35203363,ok,1.023
+hapsira Recseries,0.999,1.0,888.1666898547423,99255712.57168137,ok,0.001
+hapsira Recseries,0.999,3.0,2664.500069564227,89291438.59818232,ok,0.0
+hapsira Recseries,0.999,10.0,8881.666898547424,67315491.31799443,ok,0.0
+hapsira Recseries,1.001,0.3,266.45000695642267,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Recseries,1.001,1.0,888.1666898547423,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Recseries,1.001,3.0,2664.500069564227,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Recseries,1.001,10.0,8881.666898547424,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Recseries,1.2,0.3,266.45000695642267,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Recseries,1.2,1.0,888.1666898547423,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Recseries,1.2,3.0,2664.500069564227,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Recseries,1.2,10.0,8881.666898547424,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Recseries,2.0,0.3,266.45000695642267,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Recseries,2.0,1.0,888.1666898547423,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Recseries,2.0,3.0,2664.500069564227,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Recseries,2.0,10.0,8881.666898547424,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Recseries,5.0,0.3,266.45000695642267,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Recseries,5.0,1.0,888.1666898547423,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Recseries,5.0,3.0,2664.500069564227,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Recseries,5.0,10.0,8881.666898547424,nan,raised ValueError: Can not use an elliptic/parabolic propagator for hyperbolic orbits.,0.0
+hapsira Cowell,0.999,0.3,266.45000695642267,9.494532276843813e-08,ok,0.151
+hapsira Cowell,0.999,1.0,888.1666898547423,1.3375507854241894e-06,ok,0.002
+hapsira Cowell,0.999,3.0,2664.500069564227,4.070954797972574e-06,ok,0.002
+hapsira Cowell,0.999,10.0,8881.666898547424,2.4809491413825094e-05,ok,0.003
+hapsira Cowell,1.001,0.3,266.45000695642267,2.0034343427740202e-07,ok,0.001
+hapsira Cowell,1.001,1.0,888.1666898547423,9.212511935508024e-07,ok,0.001
+hapsira Cowell,1.001,3.0,2664.500069564227,4.229855633470192e-06,ok,0.003
+hapsira Cowell,1.001,10.0,8881.666898547424,2.5153154900237685e-05,ok,0.003
+hapsira Cowell,1.2,0.3,266.45000695642267,1.927683621678433e-07,ok,0.001
+hapsira Cowell,1.2,1.0,888.1666898547423,1.226730230031506e-06,ok,0.002
+hapsira Cowell,1.2,3.0,2664.500069564227,2.678862579076442e-06,ok,0.003
+hapsira Cowell,1.2,10.0,8881.666898547424,1.2845334960163203e-05,ok,0.003
+hapsira Cowell,2.0,0.3,266.45000695642267,7.759674267600816e-08,ok,0.001
+hapsira Cowell,2.0,1.0,888.1666898547423,6.289035845140973e-07,ok,0.002
+hapsira Cowell,2.0,3.0,2664.500069564227,1.2994624170624718e-06,ok,0.003
+hapsira Cowell,2.0,10.0,8881.666898547424,5.1461005916559405e-06,ok,0.004
+hapsira Cowell,5.0,0.3,266.45000695642267,5.915212583753273e-08,ok,0.001
+hapsira Cowell,5.0,1.0,888.1666898547423,1.7603128394364726e-07,ok,0.002
+hapsira Cowell,5.0,3.0,2664.500069564227,3.1981284550947583e-06,ok,0.003
+hapsira Cowell,5.0,10.0,8881.666898547424,6.133969948478737e-06,ok,0.004
+Orekit Keplerian,0.999,0.3,266.4500069564227,3.959147020913902e-07,ok,0.01
+Orekit Keplerian,0.999,1.0,888.1666898547425,4.323876213395567e-07,ok,0.0
+Orekit Keplerian,0.999,3.0,2664.5000695642275,5.277885208091383e-07,ok,0.0
+Orekit Keplerian,0.999,10.0,8881.666898547424,1.7103337446921075e-07,ok,0.0
+Orekit Keplerian,1.001,0.3,266.4500069564227,3.9364628603707644e-07,ok,0.002
+Orekit Keplerian,1.001,1.0,888.1666898547425,4.4719659819873757e-07,ok,0.0
+Orekit Keplerian,1.001,3.0,2664.5000695642275,4.3039122124786515e-07,ok,0.0
+Orekit Keplerian,1.001,10.0,8881.666898547424,1.2628306914530083e-06,ok,0.0
+Orekit Keplerian,1.2,0.3,266.4500069564227,1.5752910326854155e-09,ok,0.0
+Orekit Keplerian,1.2,1.0,888.1666898547425,1.4559018921847493e-09,ok,0.0
+Orekit Keplerian,1.2,3.0,2664.5000695642275,2.0463630789890885e-09,ok,0.0
+Orekit Keplerian,1.2,10.0,8881.666898547424,8.911191772433732e-09,ok,0.0
+Orekit Keplerian,2.0,0.3,266.4500069564227,1.8749713606747085e-09,ok,0.0
+Orekit Keplerian,2.0,1.0,888.1666898547425,9.374856803373543e-10,ok,0.0
+Orekit Keplerian,2.0,3.0,2664.5000695642275,5.068954308082528e-09,ok,0.0
+Orekit Keplerian,2.0,10.0,8881.666898547424,1.1827715466077945e-07,ok,0.0
+Orekit Keplerian,5.0,0.3,266.4500069564227,2.033691978340166e-09,ok,0.0
+Orekit Keplerian,5.0,1.0,888.1666898547425,1.5752910326854155e-09,ok,0.0
+Orekit Keplerian,5.0,3.0,2664.5000695642275,8.461845057321805e-09,ok,0.0
+Orekit Keplerian,5.0,10.0,8881.666898547424,1.672679199338403e-07,ok,0.0
+Orekit numerical (DP853),0.999,0.3,266.4500069564227,6.496001475267336e-06,ok,0.018
+Orekit numerical (DP853),0.999,1.0,888.1666898547425,1.7627362646485116e-05,ok,0.003
+Orekit numerical (DP853),0.999,3.0,2664.5000695642275,4.205434114329361e-05,ok,0.003
+Orekit numerical (DP853),0.999,10.0,8881.666898547424,0.00025139131971448433,ok,0.002
+Orekit numerical (DP853),1.001,0.3,266.4500069564227,6.212072254494523e-06,ok,0.0
+Orekit numerical (DP853),1.001,1.0,888.1666898547425,1.7098416175006527e-05,ok,0.001
+Orekit numerical (DP853),1.001,3.0,2664.5000695642275,3.9985092677886156e-05,ok,0.001
+Orekit numerical (DP853),1.001,10.0,8881.666898547424,0.0002399832584767936,ok,0.001
+Orekit numerical (DP853),1.2,0.3,266.4500069564227,1.408838543736135e-05,ok,0.0
+Orekit numerical (DP853),1.2,1.0,888.1666898547425,2.504158438082395e-05,ok,0.001
+Orekit numerical (DP853),1.2,3.0,2664.5000695642275,4.601368680276991e-05,ok,0.001
+Orekit numerical (DP853),1.2,10.0,8881.666898547424,0.0002468655684414011,ok,0.001
+Orekit numerical (DP853),2.0,0.3,266.4500069564227,1.992559092004297e-05,ok,0.0
+Orekit numerical (DP853),2.0,1.0,888.1666898547425,2.005304003500747e-05,ok,0.0
+Orekit numerical (DP853),2.0,3.0,2664.5000695642275,4.5867458595708696e-05,ok,0.001
+Orekit numerical (DP853),2.0,10.0,8881.666898547424,0.00017901820172919265,ok,0.001
+Orekit numerical (DP853),5.0,0.3,266.4500069564227,2.9511183615437493e-05,ok,0.0
+Orekit numerical (DP853),5.0,1.0,888.1666898547425,2.479830563781403e-05,ok,0.001
+Orekit numerical (DP853),5.0,3.0,2664.5000695642275,0.00010150519076764209,ok,0.001
+Orekit numerical (DP853),5.0,10.0,8881.666898547424,0.0003777824460062862,ok,0.119
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",0.999,0.3,266.45000889496805,0.08918548639949403,ok,1.247
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",0.999,1.0,888.1666963165602,0.039787811396113,ok,1.152
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",0.999,3.0,2664.5000889496805,0.06612260767789838,ok,1.178
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",0.999,10.0,8881.666963165602,0.013592946191059286,ok,1.165
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",1.001,0.3,266.45000889496805,0.08922999318906862,ok,1.212
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",1.001,1.0,888.1666963165602,0.03980749061085333,ok,1.217
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",1.001,3.0,2664.5000889496805,0.06616246592895927,ok,1.157
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",1.001,10.0,8881.666963165602,0.013622974503185866,ok,1.143
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",1.2,0.3,266.45000889496805,0.09363963989132619,ok,1.299
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",1.2,1.0,888.1666963165602,0.04167851634269215,ok,1.309
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",1.2,3.0,2664.5000889496805,0.0703574911565648,ok,1.287
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",1.2,10.0,8881.666963165602,0.016623187587198843,ok,1.313
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",2.0,0.3,266.45000889496805,0.11045706490469402,ok,1.352
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",2.0,1.0,888.1666963165602,0.048268753277737664,ok,1.337
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",2.0,3.0,2664.5000889496805,0.08815159176366084,ok,1.652
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",2.0,10.0,8881.666963165602,0.026380010890665453,ok,1.706
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",5.0,0.3,266.45000889496805,0.1613328031563867,ok,1.58
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",5.0,1.0,888.1666963165602,0.06639799582997902,ok,1.637
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",5.0,3.0,2664.5000889496805,0.1435108984634153,ok,1.601
+"Basilisk RKF78 (20000 steps, relTol 1e-12)",5.0,10.0,8881.666963165602,0.04909420300422134,ok,1.548

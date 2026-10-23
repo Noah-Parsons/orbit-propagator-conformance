@@ -1,0 +1,110 @@
+From 87147b6d29a25405bf32b7dae788f31a7eaec7c3 Mon Sep 17 00:00:00 2001
+From: Noah Parsons <parsons.m.noah@gmail.com>
+Date: Fri, 23 Oct 2026 12:56:38 -0600
+Subject: [PATCH] Fix Danby for hyperbolic orbits and Gooding's convergence
+ test
+
+danby_coe reduced the hyperbolic mean anomaly modulo 2*pi, as for an
+ellipse. The hyperbolic mean anomaly is not periodic, so any
+propagation ending before periapsis (negative M) or with M above 2*pi
+came back on the wrong part of the trajectory, without any error. Keep
+M as it is and make the starting value odd in M.
+
+gooding_coe iterated while f**2 >= rtol, so with the default rtol of
+1e-8 it stopped once |f| fell below 1e-4 rad. Near e = 1 that left
+errors of several milliradians in the true anomaly (about 100 km at
+e = 0.999). Compare |f| with rtol instead.
+
+Add tests comparing Danby with Farnocchia on hyperbolic orbits before
+and after periapsis, forward and backward, and Gooding with Farnocchia
+for eccentricities up to 0.999.
+---
+ src/hapsira/core/propagation/danby.py     |  5 +--
+ src/hapsira/core/propagation/gooding.py   |  2 +-
+ tests/tests_core/test_core_propagation.py | 38 +++++++++++++++++++++++
+ 3 files changed, 42 insertions(+), 3 deletions(-)
+
+diff --git a/src/hapsira/core/propagation/danby.py b/src/hapsira/core/propagation/danby.py
+index f6a71c2..400f551 100644
+--- a/src/hapsira/core/propagation/danby.py
++++ b/src/hapsira/core/propagation/danby.py
+@@ -28,8 +28,9 @@ def danby_coe(k, p, ecc, inc, raan, argp, nu, tof, numiter=20, rtol=1e-8):
+         # For parabolic and hyperbolic
+         M0 = F_to_M(nu_to_F(nu, ecc), ecc)
+         M = M0 + n * tof
+-        xma = M - 2 * np.pi * np.floor(M / 2 / np.pi)
+-        E = np.log(2 * xma / ecc + 1.8)
++        # The hyperbolic mean anomaly is not periodic, so it must not be reduced
++        xma = M
++        E = np.sign(xma) * np.log(2 * np.abs(xma) / ecc + 1.8)
+ 
+     # Iterations begin
+     n = 0
+diff --git a/src/hapsira/core/propagation/gooding.py b/src/hapsira/core/propagation/gooding.py
+index 59f53bc..a589080 100644
+--- a/src/hapsira/core/propagation/gooding.py
++++ b/src/hapsira/core/propagation/gooding.py
+@@ -24,7 +24,7 @@ def gooding_coe(k, p, ecc, inc, raan, argp, nu, tof, numiter=150, rtol=1e-8):
+     s = ecc * np.sin(M)
+     psi = s / np.sqrt(1 - 2 * c + ecc**2)
+     f = 1.0
+-    while f**2 >= rtol and n <= numiter:
++    while np.abs(f) >= rtol and n <= numiter:
+         xi = np.cos(psi)
+         eta = np.sin(psi)
+         fd = (1 - c * xi) + s * eta
+diff --git a/tests/tests_core/test_core_propagation.py b/tests/tests_core/test_core_propagation.py
+index 3c9f7e1..f38ab13 100644
+--- a/tests/tests_core/test_core_propagation.py
++++ b/tests/tests_core/test_core_propagation.py
+@@ -1,5 +1,6 @@
+ from astropy import units as u
+ from astropy.tests.helper import assert_quantity_allclose
++import numpy as np
+ import pytest
+ 
+ from hapsira.core.propagation import (
+@@ -42,3 +43,40 @@ def test_propagate_with_coe(propagator_coe):
+     nu_final = propagator_coe(k, p, ecc, inc, raan, argp, nu, period)
+ 
+     assert_quantity_allclose(nu_final, nu)
++
++
++def _angle_difference(a, b):
++    return abs((a - b + np.pi) % (2 * np.pi) - np.pi)
++
++
++@pytest.mark.parametrize("ecc", [1.2, 2.0, 5.0])
++@pytest.mark.parametrize("nu", [-1.0, -0.3, 0.3, 1.0])
++@pytest.mark.parametrize("tof_units", [0.3, 1.0, 3.0, 10.0, -0.3, -3.0])
++def test_danby_hyperbolic_agrees_with_farnocchia(ecc, nu, tof_units):
++    # The hyperbolic mean anomaly is not periodic: covers before and after periapsis
++    k = iss.attractor.k.to_value(u.km**3 / u.s**2)
++    rp = 6800.0  # km
++    p = rp * (1 + ecc)
++    inc, raan, argp = 0.9, 0.5, 1.2
++    tof = tof_units * np.sqrt(rp**3 / k)
++
++    nu_final = danby_coe(k, p, ecc, inc, raan, argp, nu, tof)
++    nu_expected = farnocchia_coe(k, p, ecc, inc, raan, argp, nu, tof)
++
++    assert _angle_difference(nu_final, nu_expected) < 1e-7
++
++
++@pytest.mark.parametrize("ecc", [0.3, 0.9, 0.99, 0.999])
++@pytest.mark.parametrize("tof_units", [0.3, 1.0, 3.0, 10.0])
++def test_gooding_converges_near_parabolic(ecc, tof_units):
++    # The default tolerance must give the documented accuracy, including near e = 1
++    k = iss.attractor.k.to_value(u.km**3 / u.s**2)
++    rp = 6800.0  # km
++    p = rp * (1 + ecc)
++    inc, raan, argp, nu = 0.9, 0.5, 1.2, -1.0
++    tof = tof_units * np.sqrt(rp**3 / k)
++
++    nu_final = gooding_coe(k, p, ecc, inc, raan, argp, nu, tof)
++    nu_expected = farnocchia_coe(k, p, ecc, inc, raan, argp, nu, tof)
++
++    assert _angle_difference(nu_final, nu_expected) < 1e-7
+-- 
+2.43.0
+

@@ -5,7 +5,7 @@ An independent check of open-source orbit propagators against closed-form refere
 | | |
 |---|---|
 | **Field** | Astrodynamics; verification of scientific software |
-| **Status** | Active. Two reference cases running; one defect found and a fix prepared |
+| **Status** | Active. Three reference cases running; silent failures found in four of hapsira's Kepler solvers, with fixes submitted |
 | **Started** | 23 October 2026 |
 | **Builds on** | The dynamics-engine conformance work (library-independent references, adapters, pre-stated tolerances) |
 | **Possible outlets** | AIAA/AAS student conference; JOSS; a public conformance page |
@@ -58,6 +58,21 @@ All three libraries agree with the closed form to within 0.44% for every rate, a
 
 A first run with e = 0.01 put the perigee rate up to 3.9% from the closed form in all three libraries alike. For a near-circular orbit, the short-period J2 terms in the eccentricity vector are comparable with the eccentricity itself, so the osculating perigee is ill-defined. Perigee rates are therefore tested on eccentric orbits only.
 
+### 3. Hyperbolic and near-parabolic orbits (`p26_hyperbolic.py`)
+
+Eccentricities of 0.999, 1.001, 1.2, 2 and 5 (perigee radius 6800 km), starting at a true anomaly of −60° and propagated through periapsis for 0.3, 1, 3 and 10 time units of √(rp³/GM), about 15 minutes each. The reference solves the elliptic or hyperbolic Kepler equation in 40-digit arithmetic. A propagator that raises an error or returns `nan` is recorded as such.
+
+| Propagator | Worst position error | Assessment |
+|---|---|---|
+| hapsira Farnocchia; Orekit Keplerian | < 0.002 mm | Correct |
+| hapsira Vallado | about 5 mm | Correct to its tolerance |
+| hapsira Cowell; Orekit numerical; Basilisk RKF78 (relTol 1e-12) | 0.03 mm to 0.2 m | Correct to their integration tolerances |
+| hapsira Markley, Pimienta, Gooding, Recseries | raise `ValueError` for e ≥ 1 | Correct: they refuse orbits they do not support |
+| **hapsira Mikkola** | `nan` before periapsis | **Finding 1** (negative mean anomaly) |
+| **hapsira Danby** | up to 56 million km on hyperbolic orbits | **Defect: Finding 4** |
+| **hapsira Gooding** | 140 km at e = 0.999 | **Defect: Finding 5** |
+| hapsira Recseries | 100,000 km at e = 0.999 | Series approximation, not suited to near-parabolic orbits |
+
 ## Findings
 
 ### Finding 1. hapsira: Mikkola and Pimienta are wrong beyond one revolution; Mikkola returns `nan` for negative mean anomaly
@@ -68,13 +83,36 @@ A first run with e = 0.01 put the perigee rate up to 3.9% from the closed form i
 - Present on 0.18.0 and on `main` (5d25e62, January 2024); no existing issue in hapsira or poliastro.
 - **Fix prepared** (`hapsira-patch/`): reduce M for elliptic orbits, use `np.cbrt`, and add a test comparing every solver with Farnocchia (85 of 360 cases fail before the fix, none after). hapsira's core and two-body propagation tests pass with the change (484 passed). With the fix, both solvers agree with this repository's reference to within 4 µm.
 
+- **Pull request opened** on hapsira, 23 October 2026.
+
 ### Finding 2. hapsira 0.18.0 does not work with the current astropy
 
 astropy 7 removed `matrix_product` from `astropy.coordinates.matrix_utilities`, which hapsira imports, so `pip install hapsira` today gives a package whose propagation module fails on import. `requirements.txt` holds astropy below 7.
 
 ### Finding 3. Basilisk defaults need stating
 
-Basilisk integrates with a fixed task step, and its RKF78 integrator defaults to a relative tolerance of 1e-4. Both give large errors on highly eccentric orbits without warning. This is configuration, not a defect, but results from Basilisk are only comparable when the step and tolerances are stated.
+Basilisk integrates with a fixed task step, and its RKF78 integrator defaults to a relative tolerance of 1e-4. Both give large errors on highly eccentric orbits without warning. On the e = 0.95 orbit after 2.71 periods (`p26_basilisk_tolerance.py`):
+
+| Task step | relTol, absTol | Position error |
+|---|---|---|
+| 998 s (500 per orbit) | 1e-4, 1e-8 (default) | 2,006 km |
+| 998 s | 1e-8, 1e-8 | 974 m |
+| 998 s | 1e-12, 1e-6 | 0.53 m |
+| 99.8 s (5000 per orbit) | 1e-4, 1e-8 (default) | 3.1 m |
+| 99.8 s | 1e-12, 1e-6 | 1.2 m |
+
+The task step, rather than the tolerance, appears to be the intended control on accuracy. This is configuration, not a defect, but results from Basilisk are only comparable when the step and tolerances are stated. The question of what settings are fair has been put to Basilisk's developers.
+
+### Finding 4. hapsira: Danby is wrong on hyperbolic orbits before periapsis and long after it
+
+- `danby_coe` reduces the hyperbolic mean anomaly modulo 2π, as for an ellipse. The hyperbolic mean anomaly is not periodic, so a negative M (before periapsis) or an M above 2π lands on the wrong part of the trajectory: 55,660 km from the reference five minutes into a run on an orbit with e = 2, and 56,112 km five minutes backward. No error or warning is raised.
+- **Fix prepared** (`hapsira-patch-2/`): leave M unreduced and make the starting value odd in M. Before the fix, 40 of 72 test cases fail; after it, none.
+- Remaining limitation, not a defect: Danby's tolerance applies to M in absolute terms, so on near-parabolic orbits, where M is small, it leaves errors of 0.5 m (e = 0.999) to 1 km (e = 1.001).
+
+### Finding 5. hapsira: Gooding stops iterating early at its default tolerance
+
+- `gooding_coe` iterates while `f**2 >= rtol`, so the default `rtol = 1e-8` stops it once |f| < 1e-4 rad, where its docstring claims accuracy better than 1e-12 rad. Near e = 1 this leaves errors of several milliradians: 161 km after 45 minutes at e = 0.999.
+- **Fix prepared** (`hapsira-patch-2/`, the same pull request as Finding 4): compare |f| with rtol. With it, Gooding agrees with the reference to 3 µm at e = 0.999.
 
 ## Reproducing
 
@@ -84,6 +122,8 @@ py -3.11 -m venv .venv
 .venv\Scripts\python.exe p26_smoke.py     # each library propagates one orbit
 .venv\Scripts\python.exe p26_kepler.py    # reference case 1, writes p26_kepler_results.csv
 .venv\Scripts\python.exe p26_j2.py        # reference case 2, writes p26_j2_results.csv
+.venv\Scripts\python.exe p26_basilisk_tolerance.py   # Finding 3
+.venv\Scripts\python.exe p26_hyperbolic.py   # reference case 3, writes p26_hyperbolic_results.csv
 ```
 
 Orekit needs a Java runtime and the `JAVA_HOME` variable set. Basilisk downloads its J2-only gravity file (`GGM03S-J2-only.txt`) on first use.
@@ -95,6 +135,9 @@ Orekit needs a Java runtime and the `JAVA_HOME` variable set. Basilisk downloads
 | `p26_smoke.py` | Installation check: one orbit per library |
 | `p26_kepler.py`, `p26_kepler_results.csv` | Reference case 1 and its results |
 | `p26_j2.py`, `p26_j2_results.csv` | Reference case 2 and its results |
+| `p26_basilisk_tolerance.py`, `p26_basilisk_tolerance_results.csv` | Basilisk RKF78 error by task step and tolerance (Finding 3) |
+| `p26_hyperbolic.py`, `p26_hyperbolic_results.csv` | Reference case 3 and its results |
+| `hapsira-patch-2/` | The fix for Findings 4 and 5, as a git patch, and the pull request text |
 | `hapsira-patch/` | The fix for Finding 1, as a git patch, and the pull request text |
 | `requirements.txt` | Pinned library versions |
 
@@ -107,8 +150,7 @@ Existing comparisons check one library against another program rather than again
 1. Submit the fix for Finding 1 to hapsira.
 2. Second-order (Brouwer) mean-element reference for J2, to tighten the 0.5% tolerance.
 3. Lambert problem cases with known solutions.
-4. Hyperbolic and near-parabolic orbits.
-5. A public conformance page, run against each new release.
+4. A public conformance page, run against each new release.
 
 ## Log
 
@@ -116,3 +158,5 @@ Existing comparisons check one library against another program rather than again
 - **23 October 2026.** Reference case 1 (Kepler) run. hapsira Mikkola and Pimienta wrong beyond one revolution; cause traced to the unreduced mean anomaly (Finding 1). Basilisk large errors at e = 0.95 traced to fixed step and default tolerance (Finding 3).
 - **23 October 2026.** While testing the fix, found that Mikkola also returns `nan` for negative mean anomaly. Fix and regression test prepared; hapsira's propagation tests pass with it.
 - **23 October 2026.** Reference case 2 (J2) run. All three libraries agree with the first-order closed form within 0.44% and with one another to about 1e-5. Near-circular orbits found unsuitable for the perigee-rate test.
+- **23 October 2026.** Pull request with the fix for Finding 1 opened on hapsira. Basilisk RKF78 error measured by task step and tolerance (Finding 3).
+- **23 October 2026.** Reference case 3 (hyperbolic and near-parabolic) run. Danby wrong on hyperbolic orbits (Finding 4) and Gooding stopping early near e = 1 (Finding 5); causes traced and a second fix prepared.
