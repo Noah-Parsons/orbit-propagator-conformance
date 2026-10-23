@@ -5,7 +5,7 @@ An independent check of open-source orbit propagators against closed-form refere
 | | |
 |---|---|
 | **Field** | Astrodynamics; verification of scientific software |
-| **Status** | Active. Three reference cases running; silent failures found in four of hapsira's Kepler solvers, with fixes submitted |
+| **Status** | Active. Three reference cases running; silent failures found in four of hapsira's Kepler solvers; one fix submitted, a second prepared |
 | **Started** | 23 October 2026 |
 | **Builds on** | The dynamics-engine conformance work (library-independent references, adapters, pre-stated tolerances) |
 | **Possible outlets** | AIAA/AAS student conference; JOSS; a public conformance page |
