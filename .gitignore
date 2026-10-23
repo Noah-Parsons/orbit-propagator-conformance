@@ -1,0 +1,3 @@
+# Local virtual environment (recreate with: py -3.11 -m venv .venv, then pip install -r requirements.txt)
+.venv/
+__pycache__/
