@@ -1,0 +1,113 @@
+From 1a5aee1eb32c23f8d32e96b54115e61260db8cac Mon Sep 17 00:00:00 2001
+From: Noah Parsons <parsons.m.noah@gmail.com>
+Date: Fri, 23 Oct 2026 11:56:32 -0600
+Subject: [PATCH] Fix the Mikkola and Pimienta solvers beyond one revolution
+ and for negative M
+
+Both solvers passed M = M0 + n * tof straight to their starting
+approximations, which assume a mean anomaly within one revolution.
+Eccentric orbits propagated past one period therefore came back wrong
+without any error: thousands of km after ten revolutions. Reduce M to
+[-pi, pi) for elliptic orbits, as the Markley and Farnocchia solvers
+already do.
+
+In the Mikkola solver, the branch for negative beta raised a negative
+number to the power 1/3, which returns nan. Every negative M took that
+branch, so backward propagation, or a short propagation starting on the
+half of the orbit before periapsis, returned nan. Use np.cbrt instead.
+
+Add a test comparing each solver with Farnocchia on eccentric orbits,
+from both halves of the orbit, forward over several revolutions and
+backward.
+---
+ src/hapsira/core/propagation/mikkola.py   |  9 ++++---
+ src/hapsira/core/propagation/pimienta.py  |  3 +++
+ tests/tests_core/test_core_propagation.py | 31 +++++++++++++++++++++++
+ 3 files changed, 40 insertions(+), 3 deletions(-)
+
+diff --git a/src/hapsira/core/propagation/mikkola.py b/src/hapsira/core/propagation/mikkola.py
+index f40d184..ba9ea7b 100644
+--- a/src/hapsira/core/propagation/mikkola.py
++++ b/src/hapsira/core/propagation/mikkola.py
+@@ -28,13 +28,16 @@ def mikkola_coe(k, p, ecc, inc, raan, argp, nu, tof):
+         M0 = F_to_M(nu_to_F(nu, ecc), ecc)
+ 
+     M = M0 + n * tof
++    if ecc < 1.0:
++        # Range between -pi and pi: the cubic starter assumes one revolution
++        M = (M + np.pi) % (2 * np.pi) - np.pi
+     beta = M / 2 / (4 * ecc + 1 / 2)
+ 
+-    # Equation (9b)
++    # Equation (9b), with a real cube root so that negative beta does not give nan
+     if beta >= 0:
+-        z = (beta + np.sqrt(beta**2 + alpha**3)) ** (1 / 3)
++        z = np.cbrt(beta + np.sqrt(beta**2 + alpha**3))
+     else:
+-        z = (beta - np.sqrt(beta**2 + alpha**3)) ** (1 / 3)
++        z = np.cbrt(beta - np.sqrt(beta**2 + alpha**3))
+ 
+     s = z - alpha / z
+ 
+diff --git a/src/hapsira/core/propagation/pimienta.py b/src/hapsira/core/propagation/pimienta.py
+index 3914466..533e5f1 100644
+--- a/src/hapsira/core/propagation/pimienta.py
++++ b/src/hapsira/core/propagation/pimienta.py
+@@ -15,6 +15,9 @@ def pimienta_coe(k, p, ecc, inc, raan, argp, nu, tof):
+ 
+     M = M0 + n * tof
+ 
++    # Range between -pi and pi: the starter assumes one revolution
++    M = (M + np.pi) % (2 * np.pi) - np.pi
++
+     # Equation (32a), (32b), (32c) and (32d)
+     c3 = 5 / 2 + 560 * ecc
+     a = 15 * (1 - ecc) / c3
+diff --git a/tests/tests_core/test_core_propagation.py b/tests/tests_core/test_core_propagation.py
+index 3c9f7e1..6c024d6 100644
+--- a/tests/tests_core/test_core_propagation.py
++++ b/tests/tests_core/test_core_propagation.py
+@@ -1,5 +1,6 @@
+ from astropy import units as u
+ from astropy.tests.helper import assert_quantity_allclose
++import numpy as np
+ import pytest
+ 
+ from hapsira.core.propagation import (
+@@ -42,3 +43,33 @@ def test_propagate_with_coe(propagator_coe):
+     nu_final = propagator_coe(k, p, ecc, inc, raan, argp, nu, period)
+ 
+     assert_quantity_allclose(nu_final, nu)
++
++
++
++@pytest.mark.parametrize(
++    "propagator_coe",
++    [
++        danby_coe,
++        markley_coe,
++        pimienta_coe,
++        mikkola_coe,
++        gooding_coe,
++    ],
++)
++@pytest.mark.parametrize("ecc", [0.01, 0.3, 0.7])
++@pytest.mark.parametrize("nu", [0.3, -0.3, 2.5, -2.5])
++@pytest.mark.parametrize("periods", [0.01, 0.71, 2.71, 10.71, -0.01, -2.71])
++def test_propagate_with_coe_agrees_with_farnocchia(propagator_coe, ecc, nu, periods):
++    # Covers both halves of the orbit, more than one revolution and backward propagation
++    k = iss.attractor.k.to_value(u.km**3 / u.s**2)
++    a = 10000.0  # km
++    p = a * (1 - ecc**2)
++    inc, raan, argp = 0.9, 0.5, 1.2
++    tof = periods * 2 * np.pi * np.sqrt(a**3 / k)
++
++    nu_final = propagator_coe(k, p, ecc, inc, raan, argp, nu, tof)
++    nu_expected = farnocchia_coe(k, p, ecc, inc, raan, argp, nu, tof)
++
++    assert np.isfinite(nu_final)
++    # Compare angles modulo a full turn
++    assert abs((nu_final - nu_expected + np.pi) % (2 * np.pi) - np.pi) < 1e-7
+-- 
+2.43.0
+
