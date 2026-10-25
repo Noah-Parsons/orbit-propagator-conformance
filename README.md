@@ -1,4 +1,4 @@
-# P26: Orbit Propagator Conformance
+# Orbit Propagator Conformance
 
 An independent check of open-source orbit propagators against closed-form references that share no code with the libraries tested. The question is whether the propagators agree with the analytical answers, and whether, when they do not, they say so or fail silently.
 
