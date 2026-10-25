@@ -5,7 +5,7 @@ An independent check of open-source orbit propagators against closed-form refere
 | | |
 |---|---|
 | **Field** | Astrodynamics; verification of scientific software |
-| **Status** | Active. Four reference cases running. Silent failures found in four of hapsira's Kepler solvers (fixes submitted as hapsira [#24](https://github.com/pleiszenburg/hapsira/pull/24) and [#25](https://github.com/pleiszenburg/hapsira/pull/25)), in hapsira's Vallado Lambert solver as documented, and in Basilisk's Lambert solver (to be reported) |
+| **Status** | Active. Four reference cases running. Silent failures found in four of hapsira's Kepler solvers (fixes submitted as hapsira [#24](https://github.com/pleiszenburg/hapsira/pull/24) and [#25](https://github.com/pleiszenburg/hapsira/pull/25)), in hapsira's Vallado Lambert solver as documented (hapsira [#26](https://github.com/pleiszenburg/hapsira/issues/26)), and in Basilisk's Lambert solver (Basilisk [#1651](https://github.com/AVSLab/basilisk/issues/1651) and [#1652](https://github.com/AVSLab/basilisk/issues/1652)) |
 | **Started** | 23 October 2026 |
 | **Builds on** | The dynamics-engine conformance work (library-independent references, adapters, pre-stated tolerances) |
 | **Possible outlets** | AIAA/AAS student conference; JOSS; a public conformance page |
@@ -143,7 +143,7 @@ This is how Basilisk is designed. Its variable-step integrators can shorten a st
 - `hapsira.iod.vallado.lambert` documents `prograde` as controlling "the desired inclination of the transfer orbit", the same wording as `izzo.lambert`, where `True` means the orbit's angular momentum points along +z. In the code (`core/iod.py`, `t_m = 1 if prograde else -1`), it instead selects the short way round (`True`) or the long way (`False`), whatever the direction of motion.
 - Used as documented, Vallado returns the wrong transfer for the long way round (250°) and for the retrograde orbit: 15 km/s from the known orbit in both cases, with no error or warning. Izzo, given the same arguments, is correct.
 - hapsira's own test for issue 840 (`tests/test_iod.py`) passes `prograde=False` to Vallado in order to match Izzo's default (`prograde=True`) on a long-way transfer, which agrees with the code rather than the docstring.
-- Whether the code or the docstring should change is the maintainers' decision: changing the code would alter results for existing callers. To be raised as an issue offering both options.
+- Whether the code or the docstring should change is the maintainers' decision: changing the code would alter results for existing callers. **Reported** as [pleiszenburg/hapsira#26](https://github.com/pleiszenburg/hapsira/issues/26), 25 October 2026, offering both options.
 
 ### Finding 7. Basilisk: the Gooding method often returns the same multi-revolution solution twice
 
@@ -152,12 +152,12 @@ This is how Basilisk is designed. Its variable-step integrators can shorten a st
 - `p26_basilisk_gooding_starter.py` reimplements the Gooding path of `lambertSolver.cpp` in Python. It reproduces the compiled module's outcome in all 297 problems. On its 300 problems it finds 126 duplicates; replacing only the second starting value with Gooding's leaves none.
 - Confirmed in Basilisk's own C++: `basilisk-check/` compiles `lambertSolver.cpp` from the current source with g++, unchanged and with the three lines corrected. The unchanged build matches the bsk 2.12.0 wheel in all 300 problems; the corrected build returns two distinct solutions in all 297 it accepts, identical to the Izzo method's, with no duplicates. Basilisk's unit test cannot see the defect: its multi-revolution times are 100 s (no solution exists) and 10⁶ s (about 100 periods, far from the minimum), and both builds pass it. The failures lie between 1.00 and 1.65 times the minimum transfer time for the number of revolutions (median 1.04); every problem less than 7% above the minimum fails.
 - The first-solution starting value also uses `1 - c3*N`, and switches between Gooding's two formulas on the opposite condition (T > T0 rather than T ≤ T0). Neither caused a failure here: the first starting value converged to the correct solution in all 300 problems.
-- To be reported to AVSLab/basilisk with the reimplementation as evidence.
+- **Reported** as [AVSLab/basilisk#1651](https://github.com/AVSLab/basilisk/issues/1651), 25 October 2026, with the reproduction, the tested patch and the reimplementation.
 
 ### Finding 8. Basilisk: retrograde transfers return the prograde solution, flagged valid
 
 - `lambertSolver` infers the transfer angle from the sign of the z-component of r1 × r2, taking a negative value to mean a transfer of more than 180°. It therefore assumes motion anticlockwise about the +z axis of the input frame. For the retrograde orbit (i = 150°), both methods return the prograde long-way transfer, 15 km/s from the known orbit, with the validity flag set.
-- The documentation states only that transfer angles must be positive ("the true anomaly of r2 is greater than the true anomaly of r1"), which a retrograde orbit satisfies. Basilisk's unit test uses prograde orbits only (i = 5°). Stating that the orbit must be prograde about +z, or accepting a direction, would close the gap. To be reported alongside Finding 7.
+- The documentation states only that transfer angles must be positive ("the true anomaly of r2 is greater than the true anomaly of r1"), which a retrograde orbit satisfies. Basilisk's unit test uses prograde orbits only (i = 5°). Stating that the orbit must be prograde about +z, or accepting a direction, would close the gap. **Reported** as [AVSLab/basilisk#1652](https://github.com/AVSLab/basilisk/issues/1652), 25 October 2026.
 
 ## Reproducing
 
@@ -198,9 +198,8 @@ Existing comparisons check one library against another program rather than again
 
 ## Planned
 
-1. Report Finding 6 to hapsira and Findings 7 and 8 to Basilisk.
-2. Second-order (Brouwer) mean-element reference for J2, to tighten the 0.5% tolerance.
-3. A public conformance page, run against each new release.
+1. Second-order (Brouwer) mean-element reference for J2, to tighten the 0.5% tolerance.
+2. A public conformance page, run against each new release.
 
 ## Log
 
@@ -212,3 +211,4 @@ Existing comparisons check one library against another program rather than again
 - **23 October 2026.** Reference case 3 (hyperbolic and near-parabolic) run. Danby wrong on hyperbolic orbits (Finding 4) and Gooding stopping early near e = 1 (Finding 5); causes traced; fix submitted as hapsira #25. The fix for Finding 1 is hapsira #24.
 - **23 October 2026.** Reference case 4 (Lambert) run. hapsira Izzo and both Orekit solvers correct throughout. hapsira Vallado's direction flag found to mean short or long way, contrary to its docstring (Finding 6). Basilisk's Gooding method returns the same multi-revolution solution twice in 124 of 297 problems, traced to its second starting value (Finding 7); both Basilisk methods assume prograde motion without saying so (Finding 8).
 - **25 October 2026.** Finding 7's fix compiled into Basilisk's own module source and tested: no duplicates in 297 problems, agreement with the Izzo method throughout; Basilisk's unit test shown not to exercise the affected region.
+- **25 October 2026.** Findings 6, 7 and 8 reported: hapsira #26, Basilisk #1651 and #1652.
