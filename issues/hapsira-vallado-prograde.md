@@ -34,7 +34,7 @@ prograde=False  izzo v0 = [ 5.8549 -1.7446  0.    ]  h_z -   vallado v0 = [ 0.36
 
 With `prograde=True`, `vallado` returns a retrograde transfer. The geometry is that of `test_issue840` in `tests/test_iod.py`, which passes `prograde=False` to `vallado` in order to match `izzo`'s default, so the existing test agrees with the code rather than with the docstring.
 
-I found this while checking Lambert solvers against orbits with a known answer: used as documented, `vallado` is 15 km/s from the known velocity on a 250° prograde transfer and on a retrograde orbit (i = 150°), while `izzo` is correct to 1e-8 m/s on both. The check is at https://github.com/Noah-Parsons/p26-orbit-propagator-conformance (Finding 6).
+I found this while checking Lambert solvers against orbits with a known answer: used as documented, `vallado` is 15 km/s from the known velocity on a 250° prograde transfer and on a retrograde orbit (i = 150°), while `izzo` is correct to 1e-8 m/s on both. The check is at https://github.com/Noah-Parsons/orbit-propagator-conformance (Finding 6).
 
 **Two possible resolutions:**
 

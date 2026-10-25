@@ -46,4 +46,4 @@ IZZO     v1 = [  137.501  7192.311 -3129.958] m/s, valid = 1, |v1 - v1_known| = 
 
 The module documentation says solutions are computed "for positive transfer angles (meaning that the true anomaly of r2 is greater than the true anomaly of r1)". A retrograde orbit meets that condition, so nothing tells the user the result will be wrong. The unit test uses i = 5° only.
 
-Either of these would close the gap: state in the documentation that the transfer must be prograde about +z of the input frame, or add a direction field to `LambertProblemMsgPayload`. I would be glad to help with either. (Finding 8 at https://github.com/Noah-Parsons/p26-orbit-propagator-conformance.)
+Either of these would close the gap: state in the documentation that the transfer must be prograde about +z of the input frame, or add a direction field to `LambertProblemMsgPayload`. I would be glad to help with either. (Finding 8 at https://github.com/Noah-Parsons/orbit-propagator-conformance.)
