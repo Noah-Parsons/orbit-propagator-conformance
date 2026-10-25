@@ -150,6 +150,7 @@ This is how Basilisk is designed. Its variable-step integrators can shorten a st
 - With one or more full revolutions, two transfers exist. `lambertSolver` reports both, each with its own validity flag. With the Gooding method, both slots hold the same solution in 124 of 297 random problems, so the other solution is lost while both are flagged valid; in 55 of those, the solution returned is not the known orbit. The Izzo method in the same module, on the same problems, never does this.
 - Cause: the starting value for the second solution in `goodingInitialGuess` (`lambertSolver.cpp`, commit ea95ec4) differs from Gooding's XLAMB routine (Gooding 1990, as transcribed in lamberthub) in three places. It adds x_M before the correction (`x_M + sqrt(...)` where Gooding has `sqrt(...)`), subtracts x_M at the end where Gooding adds it, and divides by `1 - c3*N` where Gooding has `1 + c3*N`. The starting value then falls on the wrong side of x_M, the point of minimum time of flight, in 117 of 300 problems, and Halley's iteration converges to the first solution.
 - `p26_basilisk_gooding_starter.py` reimplements the Gooding path of `lambertSolver.cpp` in Python. It reproduces the compiled module's outcome in all 297 problems. On its 300 problems it finds 126 duplicates; replacing only the second starting value with Gooding's leaves none.
+- Confirmed in Basilisk's own C++: `basilisk-check/` compiles `lambertSolver.cpp` from the current source with g++, unchanged and with the three lines corrected. The unchanged build matches the bsk 2.12.0 wheel in all 300 problems; the corrected build returns two distinct solutions in all 297 it accepts, identical to the Izzo method's, with no duplicates. Basilisk's unit test cannot see the defect: its multi-revolution times are 100 s (no solution exists) and 10⁶ s (about 100 periods, far from the minimum), and both builds pass it. The failures lie between 1.00 and 1.65 times the minimum transfer time for the number of revolutions (median 1.04); every problem less than 7% above the minimum fails.
 - The first-solution starting value also uses `1 - c3*N`, and switches between Gooding's two formulas on the opposite condition (T > T0 rather than T ≤ T0). Neither caused a failure here: the first starting value converged to the correct solution in all 300 problems.
 - To be reported to AVSLab/basilisk with the reimplementation as evidence.
 
@@ -185,8 +186,10 @@ Orekit needs a Java runtime and the `JAVA_HOME` variable set. Basilisk downloads
 | `p26_hyperbolic.py`, `p26_hyperbolic_results.csv` | Reference case 3 and its results |
 | `p26_lambert.py`, `p26_lambert_results.csv` | Reference case 4 and its results |
 | `p26_basilisk_gooding_starter.py` | Python reimplementation of Basilisk's Gooding path, with and without Gooding's starting value (Finding 7) |
+| `basilisk-check/` | Builds Basilisk's Lambert module from source, unchanged and patched, and reruns the sweep and Basilisk's unit-test grid (Finding 7) |
 | `hapsira-patch-2/` | The fix for Findings 4 and 5, as a git patch, and the pull request text |
 | `hapsira-patch/` | The fix for Finding 1, as a git patch, and the pull request text |
+| `issues/` | Issue texts for Findings 6 (hapsira), 7 and 8 (Basilisk), with minimal reproductions |
 | `requirements.txt` | Pinned library versions |
 
 ## Prior work
@@ -208,3 +211,4 @@ Existing comparisons check one library against another program rather than again
 - **23 October 2026.** Pull request with the fix for Finding 1 opened on hapsira. Basilisk RKF78 error measured by task step and tolerance (Finding 3); Basilisk's design (task rate as the maximum step) confirmed by H. Schaub.
 - **23 October 2026.** Reference case 3 (hyperbolic and near-parabolic) run. Danby wrong on hyperbolic orbits (Finding 4) and Gooding stopping early near e = 1 (Finding 5); causes traced; fix submitted as hapsira #25. The fix for Finding 1 is hapsira #24.
 - **23 October 2026.** Reference case 4 (Lambert) run. hapsira Izzo and both Orekit solvers correct throughout. hapsira Vallado's direction flag found to mean short or long way, contrary to its docstring (Finding 6). Basilisk's Gooding method returns the same multi-revolution solution twice in 124 of 297 problems, traced to its second starting value (Finding 7); both Basilisk methods assume prograde motion without saying so (Finding 8).
+- **25 October 2026.** Finding 7's fix compiled into Basilisk's own module source and tested: no duplicates in 297 problems, agreement with the Izzo method throughout; Basilisk's unit test shown not to exercise the affected region.

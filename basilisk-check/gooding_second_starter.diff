@@ -1,0 +1,18 @@
+--- a/src/fswAlgorithms/orbitControl/lambertSolver/lambertSolver.cpp
++++ b/src/fswAlgorithms/orbitControl/lambertSolver/lambertSolver.cpp
+@@ -375,12 +375,12 @@
+ 
+         // solution 2
+         double term2 = TdiffM / (0.5 * D2T + TdiffM / pow(1 - x_M, 2));
+-        double x01_2 = x_M + sqrt(term2);
++        double x01_2 = sqrt(term2);
+         double W = x_M + x01_2;
+         W = W * 4.0 / (4.0 + TdiffM) + pow(1.0 - W, 2);
+         x0Sol2 = x01_2 * (1.0 - (1.0 + this->numberOfRevolutions + c41 * (theta / (2 * M_PI) - 0.5)) /
+-                                    (1.0 - c3 * this->numberOfRevolutions) * x01_2 *
+-                                    (c1 * W + c2 * x01_2 * pow(W, 1.0 / 2.0))) -
++                                    (1.0 + c3 * this->numberOfRevolutions) * x01_2 *
++                                    (c1 * W + c2 * x01_2 * pow(W, 1.0 / 2.0))) +
+                  x_M;
+     }
+ 
